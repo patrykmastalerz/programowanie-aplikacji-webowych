@@ -144,7 +144,7 @@ class Calculator{
     }
 
     max(numbers: Array<number>): number {
-        return Math.min.apply(Math, numbers);
+        return Math.max.apply(Math, numbers);
     }
 }
 

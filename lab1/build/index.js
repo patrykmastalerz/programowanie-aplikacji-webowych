@@ -27,7 +27,7 @@ var App1 = /** @class */ (function () {
         }
         else {
             window.alert("Wprowadzona dana nie jest liczba! Popraw to!");
-            this.setZeroValueToResultInputs();
+            this.resetResultInputs();
         }
     };
     App1.prototype.clearInputDatas = function () {
@@ -35,7 +35,7 @@ var App1 = /** @class */ (function () {
             this.InputsWrapper.removeChild(this.InputsWrapper.firstChild);
         }
     };
-    App1.prototype.setZeroValueToResultInputs = function () {
+    App1.prototype.resetResultInputs = function () {
         this.InputSum.value = "0";
         this.InputAvg.value = "0";
         this.InputMin.value = "0";
@@ -85,7 +85,7 @@ var App1 = /** @class */ (function () {
         button.addEventListener("click", function () {
             _this.clearInputDatas();
             _this.DatasInputs = [];
-            _this.setZeroValueToResultInputs();
+            _this.resetResultInputs();
         });
         document.body.appendChild(button);
         document.body.appendChild(document.createElement("br"));
@@ -112,7 +112,7 @@ var Calculator = /** @class */ (function () {
         return Math.min.apply(Math, numbers);
     };
     Calculator.prototype.max = function (numbers) {
-        return Math.min.apply(Math, numbers);
+        return Math.max.apply(Math, numbers);
     };
     return Calculator;
 }());
