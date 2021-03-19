@@ -1,7 +1,7 @@
 class App1{
 
     Input: HTMLInputElement;
-    InputsWrapper: HTMLDivElement;
+    InputDatasWrapper: HTMLDivElement;
     DatasInputs: HTMLInputElement[] = [];
     InputSum: HTMLInputElement;
     InputAvg: HTMLInputElement;
@@ -49,8 +49,8 @@ class App1{
 
 
     clearInputDatas(){
-        while (this.InputsWrapper.firstChild) {
-            this.InputsWrapper.removeChild(this.InputsWrapper.firstChild);
+        while (this.InputDatasWrapper.firstChild) {
+            this.InputDatasWrapper.removeChild(this.InputDatasWrapper.firstChild);
         }
     }
 
@@ -66,7 +66,7 @@ class App1{
         input.id = "inputQuality";
         const label: HTMLLabelElement = document.createElement("label");
         label.innerHTML= "Quality inputs";
-        input.addEventListener("input", ()=> this.createInputs());
+        input.addEventListener("input", ()=> this.createDataInputs());
         
 
         this.Input = input;
@@ -90,7 +90,7 @@ class App1{
         return input;
     }
 
-    createInputs(){
+    createDataInputs(){
         this.clearInputDatas();
         this.DatasInputs = [];
         let quality: number = +this.Input.value;
@@ -99,12 +99,13 @@ class App1{
             let input: HTMLInputElement = document.createElement("input");
             input.id = index.toString();
             input.className = "data";
-            this.InputsWrapper.appendChild(input);
-            this.InputsWrapper.appendChild(this.createDeleteButton(index));
-            this.InputsWrapper.appendChild(document.createElement("br"));
+            this.InputDatasWrapper.appendChild(input);
+            this.InputDatasWrapper.appendChild(this.createDeleteButton(index));
+            this.InputDatasWrapper.appendChild(document.createElement("br"));
             this.DatasInputs.push(input);
             input.addEventListener("input", () => this.calculateData());
         }
+        this.resetResultInputs();
     }
 
     createDeleteButton(index: number) : HTMLButtonElement{
@@ -137,7 +138,7 @@ class App1{
     createWrapperForDatas(){
         const inputsWrapper: HTMLDivElement = document.createElement("div");
         document.body.appendChild(inputsWrapper);
-        this.InputsWrapper = inputsWrapper;
+        this.InputDatasWrapper = inputsWrapper;
     }
 
 }

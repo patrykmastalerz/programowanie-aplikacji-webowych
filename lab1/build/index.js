@@ -33,8 +33,8 @@ var App1 = /** @class */ (function () {
         }
     };
     App1.prototype.clearInputDatas = function () {
-        while (this.InputsWrapper.firstChild) {
-            this.InputsWrapper.removeChild(this.InputsWrapper.firstChild);
+        while (this.InputDatasWrapper.firstChild) {
+            this.InputDatasWrapper.removeChild(this.InputDatasWrapper.firstChild);
         }
     };
     App1.prototype.resetResultInputs = function () {
@@ -49,7 +49,7 @@ var App1 = /** @class */ (function () {
         input.id = "inputQuality";
         var label = document.createElement("label");
         label.innerHTML = "Quality inputs";
-        input.addEventListener("input", function () { return _this.createInputs(); });
+        input.addEventListener("input", function () { return _this.createDataInputs(); });
         this.Input = input;
         document.body.appendChild(input);
         document.body.appendChild(label);
@@ -66,7 +66,7 @@ var App1 = /** @class */ (function () {
         document.body.appendChild(document.createElement("br"));
         return input;
     };
-    App1.prototype.createInputs = function () {
+    App1.prototype.createDataInputs = function () {
         var _this = this;
         this.clearInputDatas();
         this.DatasInputs = [];
@@ -75,12 +75,13 @@ var App1 = /** @class */ (function () {
             var input = document.createElement("input");
             input.id = index.toString();
             input.className = "data";
-            this.InputsWrapper.appendChild(input);
-            this.InputsWrapper.appendChild(this.createDeleteButton(index));
-            this.InputsWrapper.appendChild(document.createElement("br"));
+            this.InputDatasWrapper.appendChild(input);
+            this.InputDatasWrapper.appendChild(this.createDeleteButton(index));
+            this.InputDatasWrapper.appendChild(document.createElement("br"));
             this.DatasInputs.push(input);
             input.addEventListener("input", function () { return _this.calculateData(); });
         }
+        this.resetResultInputs();
     };
     App1.prototype.createDeleteButton = function (index) {
         var _this = this;
@@ -109,7 +110,7 @@ var App1 = /** @class */ (function () {
     App1.prototype.createWrapperForDatas = function () {
         var inputsWrapper = document.createElement("div");
         document.body.appendChild(inputsWrapper);
-        this.InputsWrapper = inputsWrapper;
+        this.InputDatasWrapper = inputsWrapper;
     };
     return App1;
 }());
