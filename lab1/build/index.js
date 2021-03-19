@@ -9,7 +9,6 @@ var App1 = /** @class */ (function () {
         this.InputMin = this.createResultInput("min");
         this.InputMax = this.createResultInput("max");
         this.createQualityInput();
-        this.createDeleteButton();
         this.createWrapperForDatas();
     };
     App1.prototype.calculateData = function () {
@@ -27,6 +26,9 @@ var App1 = /** @class */ (function () {
         }
         else {
             window.alert("Wprowadzona dana nie jest liczba! Popraw to!");
+            this.resetResultInputs();
+        }
+        if (numbers.length == 0) {
             this.resetResultInputs();
         }
     };
@@ -71,24 +73,38 @@ var App1 = /** @class */ (function () {
         var quality = +this.Input.value;
         for (var index = 0; index < quality; index++) {
             var input = document.createElement("input");
+            input.id = index.toString();
             input.className = "data";
             this.InputsWrapper.appendChild(input);
+            this.InputsWrapper.appendChild(this.createDeleteButton(index));
             this.InputsWrapper.appendChild(document.createElement("br"));
             this.DatasInputs.push(input);
             input.addEventListener("input", function () { return _this.calculateData(); });
         }
     };
-    App1.prototype.createDeleteButton = function () {
+    App1.prototype.createDeleteButton = function (index) {
         var _this = this;
         var button = document.createElement("button");
         button.innerText = "usun";
+        button.id = index + "_button";
         button.addEventListener("click", function () {
-            _this.clearInputDatas();
-            _this.DatasInputs = [];
-            _this.resetResultInputs();
+            _this.deleteInput(index);
         });
-        document.body.appendChild(button);
-        document.body.appendChild(document.createElement("br"));
+        return button;
+    };
+    App1.prototype.deleteInput = function (index) {
+        var button = document.getElementById(index + "_button");
+        var elem = document.getElementById(index.toString());
+        elem.parentNode.removeChild(elem);
+        button.parentNode.removeChild(button);
+        var newDataInputsArray = [];
+        var inputElements = document.querySelectorAll(".data");
+        for (var index_1 = 0; index_1 < inputElements.length; index_1++) {
+            var element = inputElements[index_1];
+            newDataInputsArray.push(element);
+        }
+        this.DatasInputs = newDataInputsArray;
+        this.calculateData();
     };
     App1.prototype.createWrapperForDatas = function () {
         var inputsWrapper = document.createElement("div");

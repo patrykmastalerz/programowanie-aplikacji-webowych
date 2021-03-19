@@ -19,13 +19,11 @@ class App1{
         this.InputMin = this.createResultInput("min");
         this.InputMax = this.createResultInput("max");
         this.createQualityInput();
-        this.createDeleteButton();
         this.createWrapperForDatas();
     }
 
     calculateData(){
-        let numbers: number[] = [];
-        
+        let numbers: number[] = [];     
 
         for (let index = 0; index < this.DatasInputs.length; index++) {
             const element = this.DatasInputs[index];
@@ -40,6 +38,10 @@ class App1{
             this.InputMax.value = calculator.max(numbers).toString();
         } else {
             window.alert("Wprowadzona dana nie jest liczba! Popraw to!");
+            this.resetResultInputs();
+        }
+
+        if(numbers.length == 0){
             this.resetResultInputs();
         }
     }
@@ -82,6 +84,7 @@ class App1{
         label.innerHTML= type;
         document.body.appendChild(input);
         document.body.appendChild(label);
+        
         document.body.appendChild(document.createElement("br"));
        
         return input;
@@ -94,29 +97,42 @@ class App1{
 
         for (let index = 0; index < quality; index++) {
             let input: HTMLInputElement = document.createElement("input");
+            input.id = index.toString();
             input.className = "data";
             this.InputsWrapper.appendChild(input);
+            this.InputsWrapper.appendChild(this.createDeleteButton(index));
             this.InputsWrapper.appendChild(document.createElement("br"));
             this.DatasInputs.push(input);
             input.addEventListener("input", () => this.calculateData());
         }
     }
 
-    createDeleteButton(){
+    createDeleteButton(index: number) : HTMLButtonElement{
         const button: HTMLButtonElement = document.createElement("button");
 
         button.innerText = "usun";
+        button.id = index + "_button";
         button.addEventListener("click", () => {
-            this.clearInputDatas();
-            this.DatasInputs = [];
-            this.resetResultInputs();
+            this.deleteInput(index);
         })
-
-        document.body.appendChild(button);
-   
-        document.body.appendChild(document.createElement("br"));  
+        return button;
     }
 
+    deleteInput(index: number){
+        const button: HTMLButtonElement = document.getElementById(index+"_button") as HTMLButtonElement;
+        var elem = document.getElementById(index.toString());
+        elem.parentNode.removeChild(elem);
+        button.parentNode.removeChild(button);
+
+        let newDataInputsArray: HTMLInputElement[] = [];
+        let inputElements = document.querySelectorAll(".data");
+        for (let index = 0; index < inputElements.length; index++) {
+            const element = inputElements[index] as HTMLInputElement;
+            newDataInputsArray.push(element);
+        }
+        this.DatasInputs = newDataInputsArray;
+        this.calculateData();
+    }
 
     createWrapperForDatas(){
         const inputsWrapper: HTMLDivElement = document.createElement("div");
