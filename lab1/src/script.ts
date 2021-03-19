@@ -13,13 +13,14 @@ class App {
         this.getDataInputs();
         this.getResultInputs();
         this.watchData();
+        console.log("dziala");
     }
 
     getDataInputs(){
         this.input1 = document.querySelector("#data1");
-        this.input2 = document.querySelector("#data1");
-        this.input3 = document.querySelector("#data1");
-        this.input4 = document.querySelector("#data1");
+        this.input2 = document.querySelector("#data2");
+        this.input3 = document.querySelector("#data3");
+        this.input4 = document.querySelector("#data4");
     }
 
     getResultInputs(){
@@ -54,4 +55,10 @@ class App {
         this.input4.addEventListener("input", ()=> this.calculateData());
     }
 
+
+
+
+
 }
+
+const app = new App();
