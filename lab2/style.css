@@ -30,6 +30,12 @@ button {
 
 }
 
+.allBtnChannel{
+    border: none;
+    background-color: rgb(27, 27, 27);
+    color: white;
+}
+
 
 
 .btnChannelWrapper{
