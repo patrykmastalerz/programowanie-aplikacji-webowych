@@ -92,7 +92,7 @@ function addAnimationToProgressBar(index: number, time: string){
             progress.style = "";
 
             setTimeout(() => {
-                progress.style.animation = `progressBarAnim ${time} forwards linear`;
+                progress.style.animation = `progressBarAnim ${time} linear`;
             }, 0)
         } 
     }

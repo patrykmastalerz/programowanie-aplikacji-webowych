@@ -72,7 +72,7 @@ function addAnimationToProgressBar(index, time) {
         if (index == progress.dataset.progressbar) {
             progress.style = "";
             setTimeout(function () {
-                progress.style.animation = "progressBarAnim " + time + " forwards linear";
+                progress.style.animation = "progressBarAnim " + time + " linear";
             }, 0);
         }
     };
