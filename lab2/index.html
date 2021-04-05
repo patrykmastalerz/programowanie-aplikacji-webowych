@@ -7,18 +7,23 @@
     <title>Document</title>
 </head>
 <body>
-    <audio src="sounds/hihat.wav" controls data-sound="hihat"></audio>
-    <audio src="sounds/clap.wav" controls data-sound="clap"></audio>
-    <audio src="sounds/boom.wav" controls data-sound="boom"></audio>
-    <audio src="sounds/kick.wav" controls data-sound="kick"></audio>
-    <button id="btnChannel1">Play Channel 1</button>
-    <button id="startRecordChannel1">Start Record Channel 1</button>
-    <button id="btnChannel2">Play Channel 2</button>
-    <button id="startRecordChannel2">Start Record Channel 2</button>
-    <button id="btnChannel3">Play Channel 3</button>
-    <button id="startRecordChannel3">Start Record Channel 3</button>
-    <button id="btnChannel4">Play Channel 4</button>
-    <button id="startRecordChannel4">Start Record Channel 4</button>
+    <audio src="sounds/hihat.wav" controls data-sound="hihat" data-key="q"></audio>
+    <audio src="sounds/clap.wav" controls data-sound="clap"  data-key="w"></audio>
+    <audio src="sounds/boom.wav" controls data-sound="boom"  data-key="e"></audio>
+    <audio src="sounds/kick.wav" controls data-sound="kick"  data-key="r"></audio>
+
+    <button class="btnChannel" data-channel="0">Play Channel 1</button>
+    <button class="recordChannel" data-record="0">Start/Stop Record Channel 1</button>
+
+    <button class="btnChannel" data-channel="1">Play Channel 2</button>
+    <button class="recordChannel" data-record="1">Start/Stop Record Channel 2</button>
+
+    <button class="btnChannel" data-channel="2">Play Channel 3</button>
+    <button class="recordChannel" data-record="2">Start/Stop Record Channel 3</button>
+
+    <button class="btnChannel" data-channel="3">Play Channel 4</button>
+    <button class="recordChannel" data-record="3">Start/Stop Record Channel 4</button>
+
     <script src="index.js"></script>
 </body>
 </html>

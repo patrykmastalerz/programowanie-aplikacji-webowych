@@ -1,66 +1,103 @@
-var hitHatSound;
-var clapSound;
-var boomSound;
-var kickSound;
-var recordChannel1;
-var recordChannel2;
-var recordChannel3;
-var recordChannel4;
-var channel1 = [];
-var channel2 = [];
-var channel3 = [];
-var channel4 = [];
+var startTime = null;
+var selectedChannel = null;
+var channels = [[], [], [], []];
 appStart();
 function appStart() {
-    document.body.addEventListener('keypress', onKeyDown);
-    setPlayOnButtonChannels();
-    getSounds();
+    makeSound();
+    selectChannel();
+    playChannel();
 }
-function onPlayChannel1() {
-    channel1.forEach(function (sound) {
-        setTimeout(function () { return playSound(sound.key); }, sound.time);
-    });
-}
-function setPlayOnButtonChannels() {
-    document.querySelector("#btnChannel1").addEventListener('click', onPlayChannel1);
-    document.querySelector("#btnChannel2").addEventListener('click', onPlayChannel1);
-    document.querySelector("#btnChannel3").addEventListener('click', onPlayChannel1);
-    document.querySelector("#btnChannel4").addEventListener('click', onPlayChannel1);
-}
-function getRecordButtons() {
-    recordChannel1 = document.querySelector("#startRecordChannel1");
-    recordChannel2 = document.querySelector("#startRecordChannel2");
-    recordChannel3 = document.querySelector("#startRecordChannel3");
-    recordChannel4 = document.querySelector("#startRecordChannel4");
-}
-function getSounds() {
-    hitHatSound = document.querySelector('[data-sound="hihat"]');
-    clapSound = document.querySelector('[data-sound="clap"]');
-    boomSound = document.querySelector('[data-sound="boom"]');
-    kickSound = document.querySelector('[data-sound="kick"]');
-}
-function onKeyDown(ev) {
-    var key = ev.key;
-    var time = ev.timeStamp;
-    channel1.push({ key: key, time: time });
-}
-function playSound(key) {
-    switch (key) {
-        case 'q':
-            hitHatSound.currentTime = 0;
-            hitHatSound.play();
-            break;
-        case 'w':
-            clapSound.currentTime = 0;
-            clapSound.play();
-            break;
-        case 'e':
-            boomSound.currentTime = 0;
-            boomSound.play();
-            break;
-        case 'r':
-            boomSound.currentTime = 0;
-            boomSound.play();
-            break;
+function selectChannel() {
+    var recordChannels = document.querySelectorAll(".recordChannel");
+    for (var _i = 0, _a = recordChannels; _i < _a.length; _i++) {
+        var record = _a[_i];
+        record.addEventListener("click", function (e) {
+            var recordValue = e.target.dataset.record;
+            if (selectedChannel !== Number(recordValue)) {
+                selectedChannel = Number(recordValue);
+                startTime = e.timeStamp;
+            }
+            else {
+                selectedChannel = null;
+            }
+            makeButtonDisabled();
+        });
     }
 }
+function makeSound() {
+    window.addEventListener("keydown", function (e) {
+        var audio = getAudio(e.key);
+        recordSound(audio, e.timeStamp);
+        console.log(channels);
+    });
+}
+function getAudio(key) {
+    var audio = document.querySelector("[data-key=\"" + key + "\"]");
+    audio.currentTime = 0;
+    audio.play();
+    return audio;
+}
+function playChannel() {
+    var playChannelBtn = document.querySelectorAll(".btnChannel");
+    for (var _i = 0, _a = playChannelBtn; _i < _a.length; _i++) {
+        var channel = _a[_i];
+        channel.addEventListener("click", function (e) {
+            console.log(e);
+            var currentChannel = channels[e.target.dataset.channel];
+            currentChannel.forEach(function (sound) {
+                setTimeout(function () {
+                    getAudio(sound.key);
+                }, sound.time - startTime);
+            });
+        });
+    }
+}
+function makeButtonDisabled() {
+    console.log(selectedChannel);
+    var buttons = document.querySelectorAll(".recordChannel");
+    var channels = document.querySelectorAll(".btnChannel");
+    for (var _i = 0, _a = channels; _i < _a.length; _i++) {
+        var channel = _a[_i];
+        if (selectedChannel == null) {
+            channel.disabled = false;
+        }
+        else {
+            channel.disabled = true;
+        }
+    }
+    for (var _b = 0, _c = buttons; _b < _c.length; _b++) {
+        var button = _c[_b];
+        if (selectedChannel == null) {
+            button.disabled = false;
+        }
+        else if (Number(button.dataset.record) !== selectedChannel) {
+            button.disabled = true;
+        }
+    }
+}
+function recordSound(audio, timestamp) {
+    if (selectedChannel != null) {
+        channels[selectedChannel].push({
+            key: audio.dataset.key,
+            time: timestamp
+        });
+    }
+}
+// function onPlayChannel1(): void {
+//     channel1.forEach(sound => {
+//         setTimeout(() => makeSound(sound.key), sound.time)
+//     })
+// }
+// function onKeyDown(ev: KeyboardEvent): void{
+//     const key = ev.key;
+//     const time = ev.timeStamp;
+//     console.log(time);
+//     makeSound(key);
+//     // channel1.push({key, time});
+// }
+// po kliknieciu nagrywal -> biorac pod uwage roznice czasowe
+// odtwarzal dzwiek po kanale
+//odtwarzanie dzwieku
+// function setPlayOnButtonChannels(): void{
+//     document.querySelector("#btnChannel1").addEventListener('click', onPlayChannel1);
+// }
