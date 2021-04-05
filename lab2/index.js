@@ -1,21 +1,35 @@
-var startTime = null;
-var selectedChannel = null;
 var channels = [[], [], [], []];
+var startTime = [null, null, null, null];
+var selectedChannel = null;
+var recordChannels;
+var playChannelBtns;
 appStart();
 function appStart() {
+    getRecordChannel();
+    getPlayChannels();
+    addEventOnKeyButtons();
     makeSound();
     selectChannel();
     playChannel();
+    playAllChannels();
+}
+function getRecordChannel() {
+    recordChannels = document.querySelectorAll(".recordChannel");
+}
+function getPlayChannels() {
+    playChannelBtns = document.querySelectorAll(".btnChannel");
 }
 function selectChannel() {
-    var recordChannels = document.querySelectorAll(".recordChannel");
+    //const recordChannels : NodeListOf<Element> = document.querySelectorAll(".recordChannel"); 
     for (var _i = 0, _a = recordChannels; _i < _a.length; _i++) {
         var record = _a[_i];
         record.addEventListener("click", function (e) {
-            var recordValue = e.target.dataset.record;
-            if (selectedChannel !== Number(recordValue)) {
-                selectedChannel = Number(recordValue);
-                startTime = e.timeStamp;
+            var target = e.target;
+            var recordValue = target.dataset.record;
+            var parsedValue = Number(recordValue);
+            if (selectedChannel !== parsedValue) {
+                selectedChannel = parsedValue;
+                startTime[parsedValue] = e.timeStamp;
             }
             else {
                 selectedChannel = null;
@@ -38,25 +52,37 @@ function getAudio(key) {
     return audio;
 }
 function playChannel() {
-    var playChannelBtn = document.querySelectorAll(".btnChannel");
-    for (var _i = 0, _a = playChannelBtn; _i < _a.length; _i++) {
+    //const playChannelBtn : NodeListOf<HTMLButtonElement> = document.querySelectorAll(".btnChannel");
+    for (var _i = 0, _a = playChannelBtns; _i < _a.length; _i++) {
         var channel = _a[_i];
         channel.addEventListener("click", function (e) {
             console.log(e);
-            var currentChannel = channels[e.target.dataset.channel];
+            var target = e.target;
+            var currentChannel = channels[target.dataset.channel];
             currentChannel.forEach(function (sound) {
                 setTimeout(function () {
                     getAudio(sound.key);
-                }, sound.time - startTime);
+                }, sound.time - startTime[target.dataset.channel]);
             });
         });
     }
 }
+function playAllChannels() {
+    document.querySelector("#allChannels").addEventListener("click", function () {
+        channels.forEach(function (channel, index) {
+            channel.forEach(function (sound) {
+                setTimeout(function () {
+                    getAudio(sound.key);
+                }, sound.time - startTime[index]);
+            });
+        });
+    });
+}
 function makeButtonDisabled() {
     console.log(selectedChannel);
-    var buttons = document.querySelectorAll(".recordChannel");
-    var channels = document.querySelectorAll(".btnChannel");
-    for (var _i = 0, _a = channels; _i < _a.length; _i++) {
+    // const buttons : NodeListOf<HTMLButtonElement> = document.querySelectorAll(".recordChannel");
+    // const channels : NodeListOf<HTMLButtonElement> = document.querySelectorAll(".btnChannel");
+    for (var _i = 0, _a = playChannelBtns; _i < _a.length; _i++) {
         var channel = _a[_i];
         if (selectedChannel == null) {
             channel.disabled = false;
@@ -65,7 +91,7 @@ function makeButtonDisabled() {
             channel.disabled = true;
         }
     }
-    for (var _b = 0, _c = buttons; _b < _c.length; _b++) {
+    for (var _b = 0, _c = recordChannels; _b < _c.length; _b++) {
         var button = _c[_b];
         if (selectedChannel == null) {
             button.disabled = false;
@@ -83,21 +109,31 @@ function recordSound(audio, timestamp) {
         });
     }
 }
-// function onPlayChannel1(): void {
-//     channel1.forEach(sound => {
-//         setTimeout(() => makeSound(sound.key), sound.time)
-//     })
-// }
-// function onKeyDown(ev: KeyboardEvent): void{
-//     const key = ev.key;
-//     const time = ev.timeStamp;
-//     console.log(time);
-//     makeSound(key);
-//     // channel1.push({key, time});
-// }
-// po kliknieciu nagrywal -> biorac pod uwage roznice czasowe
-// odtwarzal dzwiek po kanale
-//odtwarzanie dzwieku
-// function setPlayOnButtonChannels(): void{
-//     document.querySelector("#btnChannel1").addEventListener('click', onPlayChannel1);
-// }
+function addEventOnKeyButtons() {
+    var keyButtons = document.querySelectorAll(".keyButton");
+    window.addEventListener("keydown", function (e) {
+        var _loop_1 = function (btn) {
+            if (e.key == btn.dataset.keybutton) {
+                btn.classList.add("playing");
+                setTimeout(function () {
+                    btn.classList.remove("playing");
+                }, 100);
+            }
+        };
+        for (var _i = 0, _a = keyButtons; _i < _a.length; _i++) {
+            var btn = _a[_i];
+            _loop_1(btn);
+        }
+    });
+    // for (const btn of keyButtons as any){ 
+    //     btn.addEventListener("keydown", (e: MouseEvent) => {
+    //         btn.classList.add("playing");
+    //         console.log("dziala");
+    //         btn.forEach( () => {
+    //             setTimeout(() => {
+    //                 btn.classList.remove("playing");
+    //             }, 1000)
+    //         })
+    //     })
+    // }
+}
