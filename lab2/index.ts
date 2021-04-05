@@ -21,18 +21,8 @@ function appStart(): void {
     playAllChannels();
 }
 
-function getRecordChannel(): void{
-    recordChannels = document.querySelectorAll(".recordChannel");
-}
-
-function getPlayChannels(): void {
-    playChannelBtns = document.querySelectorAll(".btnChannel");
-}
 
 function selectChannel(): void {
-
-    //const recordChannels : NodeListOf<Element> = document.querySelectorAll(".recordChannel"); 
-
     for (const record of recordChannels as any){ 
         record.addEventListener("click", (e: MouseEvent) => {
             const target = e.target as HTMLButtonElement; 
@@ -49,8 +39,6 @@ function selectChannel(): void {
         })
     }  
 }
-
-
 
 function makeSound(): void {
     window.addEventListener("keydown", (e) => {
@@ -70,53 +58,82 @@ function getAudio(key: string) {
 }
 
 function playChannel(): void {
-    //const playChannelBtn : NodeListOf<HTMLButtonElement> = document.querySelectorAll(".btnChannel");
+    
     for (const channel of playChannelBtns as any){ 
         channel.addEventListener("click", (e: MouseEvent) => {
-            console.log(e);
+
             const target = e.target as HTMLButtonElement; 
             const currentChannel = channels[target.dataset.channel];
+            
+            let index: number = channel.dataset.channel;
+            let time: string;
 
             currentChannel.forEach( sound => {
+                time = `${sound.time - startTime[target.dataset.channel].toFixed()}ms`;
+
                 setTimeout(() => {
                     getAudio(sound.key);
+
                 }, sound.time - startTime[target.dataset.channel])
+                
             })
+            addAnimationToProgressBar(index, time);
+            console.log(channel);
         })
     }
 
 }
 
+function addAnimationToProgressBar(index: number, time: string){
+    const progressBars : NodeListOf<HTMLButtonElement> = document.querySelectorAll(".progressBar");
+
+    for (const progress of progressBars as any){  
+        if (index == progress.dataset.progressbar) { 
+            progress.style = "";
+
+            setTimeout(() => {
+                progress.style.animation = `progressBarAnim ${time} forwards linear`;
+            }, 0)
+        } 
+    }
+}
+
+
 function playAllChannels(): void{
     document.querySelector("#allChannels").addEventListener("click", () => {
         channels.forEach((channel, index) => {
+            let time: string;
+            
             channel.forEach(sound => {
+                time = `${sound.time - Number(startTime[index].toFixed())}ms`;
                 setTimeout(() => {
                     getAudio(sound.key);
                 }, sound.time - startTime[index])
             })
+            addAnimationToProgressBar(index, time);
         })
     })
 }
 
 function makeButtonDisabled(){
-    console.log(selectedChannel);
-    // const buttons : NodeListOf<HTMLButtonElement> = document.querySelectorAll(".recordChannel");
-    // const channels : NodeListOf<HTMLButtonElement> = document.querySelectorAll(".btnChannel");
 
     for (const channel of playChannelBtns as any){ 
         if (selectedChannel == null) {
             channel.disabled = false;
+            channel.classList.remove("disable");
         } else{
             channel.disabled = true;
+            channel.classList.add("disable");
         }
     }
 
     for (const button of recordChannels as any){ 
         if (selectedChannel == null) {
             button.disabled = false;
+            button.classList.remove("disable");
         } else if (Number(button.dataset.record) !== selectedChannel) {
             button.disabled = true;
+            button.classList.add("disable");
         }
     }
 }
@@ -146,20 +163,13 @@ function addEventOnKeyButtons(): void{
         }
     })
 
-
-
-
-    // for (const btn of keyButtons as any){ 
-    //     btn.addEventListener("keydown", (e: MouseEvent) => {
-    //         btn.classList.add("playing");
-    //         console.log("dziala");
-    //         btn.forEach( () => {
-    //             setTimeout(() => {
-    //                 btn.classList.remove("playing");
-    //             }, 1000)
-    //         })
-    //     })
-    // }
-
-
 }
+
+function getRecordChannel(): void{
+    recordChannels = document.querySelectorAll(".recordChannel");
+}
+
+function getPlayChannels(): void {
+    playChannelBtns = document.querySelectorAll(".btnChannel");
+}
+

@@ -13,14 +13,7 @@ function appStart() {
     playChannel();
     playAllChannels();
 }
-function getRecordChannel() {
-    recordChannels = document.querySelectorAll(".recordChannel");
-}
-function getPlayChannels() {
-    playChannelBtns = document.querySelectorAll(".btnChannel");
-}
 function selectChannel() {
-    //const recordChannels : NodeListOf<Element> = document.querySelectorAll(".recordChannel"); 
     for (var _i = 0, _a = recordChannels; _i < _a.length; _i++) {
         var record = _a[_i];
         record.addEventListener("click", function (e) {
@@ -52,52 +45,77 @@ function getAudio(key) {
     return audio;
 }
 function playChannel() {
-    //const playChannelBtn : NodeListOf<HTMLButtonElement> = document.querySelectorAll(".btnChannel");
-    for (var _i = 0, _a = playChannelBtns; _i < _a.length; _i++) {
-        var channel = _a[_i];
+    var _loop_1 = function (channel) {
         channel.addEventListener("click", function (e) {
-            console.log(e);
             var target = e.target;
             var currentChannel = channels[target.dataset.channel];
+            var index = channel.dataset.channel;
+            var time;
             currentChannel.forEach(function (sound) {
+                time = sound.time - startTime[target.dataset.channel].toFixed() + "ms";
                 setTimeout(function () {
                     getAudio(sound.key);
                 }, sound.time - startTime[target.dataset.channel]);
             });
+            addAnimationToProgressBar(index, time);
+            console.log(channel);
         });
+    };
+    for (var _i = 0, _a = playChannelBtns; _i < _a.length; _i++) {
+        var channel = _a[_i];
+        _loop_1(channel);
+    }
+}
+function addAnimationToProgressBar(index, time) {
+    var progressBars = document.querySelectorAll(".progressBar");
+    var _loop_2 = function (progress) {
+        if (index == progress.dataset.progressbar) {
+            progress.style = "";
+            setTimeout(function () {
+                progress.style.animation = "progressBarAnim " + time + " forwards linear";
+            }, 0);
+        }
+    };
+    for (var _i = 0, _a = progressBars; _i < _a.length; _i++) {
+        var progress = _a[_i];
+        _loop_2(progress);
     }
 }
 function playAllChannels() {
     document.querySelector("#allChannels").addEventListener("click", function () {
         channels.forEach(function (channel, index) {
+            var time;
             channel.forEach(function (sound) {
+                time = sound.time - Number(startTime[index].toFixed()) + "ms";
                 setTimeout(function () {
                     getAudio(sound.key);
                 }, sound.time - startTime[index]);
             });
+            addAnimationToProgressBar(index, time);
         });
     });
 }
 function makeButtonDisabled() {
-    console.log(selectedChannel);
-    // const buttons : NodeListOf<HTMLButtonElement> = document.querySelectorAll(".recordChannel");
-    // const channels : NodeListOf<HTMLButtonElement> = document.querySelectorAll(".btnChannel");
     for (var _i = 0, _a = playChannelBtns; _i < _a.length; _i++) {
         var channel = _a[_i];
         if (selectedChannel == null) {
             channel.disabled = false;
+            channel.classList.remove("disable");
         }
         else {
             channel.disabled = true;
+            channel.classList.add("disable");
         }
     }
     for (var _b = 0, _c = recordChannels; _b < _c.length; _b++) {
         var button = _c[_b];
         if (selectedChannel == null) {
             button.disabled = false;
+            button.classList.remove("disable");
         }
         else if (Number(button.dataset.record) !== selectedChannel) {
             button.disabled = true;
+            button.classList.add("disable");
         }
     }
 }
@@ -112,7 +130,7 @@ function recordSound(audio, timestamp) {
 function addEventOnKeyButtons() {
     var keyButtons = document.querySelectorAll(".keyButton");
     window.addEventListener("keydown", function (e) {
-        var _loop_1 = function (btn) {
+        var _loop_3 = function (btn) {
             if (e.key == btn.dataset.keybutton) {
                 btn.classList.add("playing");
                 setTimeout(function () {
@@ -122,18 +140,13 @@ function addEventOnKeyButtons() {
         };
         for (var _i = 0, _a = keyButtons; _i < _a.length; _i++) {
             var btn = _a[_i];
-            _loop_1(btn);
+            _loop_3(btn);
         }
     });
-    // for (const btn of keyButtons as any){ 
-    //     btn.addEventListener("keydown", (e: MouseEvent) => {
-    //         btn.classList.add("playing");
-    //         console.log("dziala");
-    //         btn.forEach( () => {
-    //             setTimeout(() => {
-    //                 btn.classList.remove("playing");
-    //             }, 1000)
-    //         })
-    //     })
-    // }
+}
+function getRecordChannel() {
+    recordChannels = document.querySelectorAll(".recordChannel");
+}
+function getPlayChannels() {
+    playChannelBtns = document.querySelectorAll(".btnChannel");
 }

@@ -8,10 +8,15 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <audio src="sounds/hihat.wav" class="btnChannel" data-sound="hihat" data-key="q"></audio>
+    <audio src="sounds/hihat.wav" data-sound="hihat" data-key="q"></audio>
     <audio src="sounds/clap.wav"  data-sound="clap"  data-key="w"></audio>
     <audio src="sounds/boom.wav"  data-sound="boom"  data-key="e"></audio>
     <audio src="sounds/kick.wav"  data-sound="kick"  data-key="r"></audio>
+    <audio src="sounds/openhat.wav"  data-sound="openhat"  data-key="a"></audio>
+    <audio src="sounds/ride.wav"  data-sound="ride"  data-key="s"></audio>
+    <audio src="sounds/snare.wav"  data-sound="snare"  data-key="d"></audio>
+    <audio src="sounds/tink.wav"  data-sound="tink"  data-key="f"></audio>
+    <audio src="sounds/tom.wav"  data-sound="tom"  data-key="z"></audio>
 
     <div class="buttonPlayWrapper">
         <button class="keyButton" data-keybutton="q">Q</button>    
@@ -25,24 +30,36 @@
         <button class="keyButton" data-keybutton="z">z</button> 
     </div>
 
-    <div>
+    <div class="btnChannelWrapper">
         <button class="btnChannel" data-channel="0">Play Channel 1</button>
         <button class="recordChannel" data-record="0">Start/Stop</button>
+        <div class="progressBarWrapper">
+            <span class="progressBar" data-progressbar="0"></span>
+        </div>
     </div>
 
-    <div>
+    <div class="btnChannelWrapper">
         <button class="btnChannel" data-channel="1">Play Channel 2</button>
         <button class="recordChannel" data-record="1">Start/Stop</button>
+        <div class="progressBarWrapper">
+            <span class="progressBar" data-progressbar="1"></span>
+        </div>
     </div>
 
-    <div>
+    <div class="btnChannelWrapper">
         <button class="btnChannel" data-channel="2">Play Channel 3</button>
         <button class="recordChannel" data-record="2">Start/Stop</button>
+        <div class="progressBarWrapper">
+            <span class="progressBar" data-progressbar="2"></span>
+        </div>
     </div>
 
-    <div>
+    <div class="btnChannelWrapper">
         <button class="btnChannel" data-channel="3">Play Channel 4</button>
         <button class="recordChannel" data-record="3">Start/Stop</button>
+        <div class="progressBarWrapper">
+            <span class="progressBar" data-progressbar="3"></span>
+        </div>
     </div>
     <button  id="allChannels">All Channels</button>
     <script src="index.js"></script>
