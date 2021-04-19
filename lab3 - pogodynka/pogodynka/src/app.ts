@@ -1,17 +1,14 @@
 import { IWeatherData } from './interface';
 
 export class App {
-    opwApiKey = '50d53005c0fd5f556bb4ef15224c4209';
+    opwApiKey = '8030280095c14fd30fd407266b2a4e1a';
     cityInput: HTMLInputElement;
     addCityBtn: HTMLButtonElement;
     uiWeather = new UIWeather();
 
     constructor() {
         this.getInputAndButton();
-
         this.getCityData();
-
-        //tutaj dodac funkcje ktora w konstruktorze na calym localstorage wywoła getCityInfo!!!!;
         this.getWeatherAllCities();
         
     }
@@ -43,11 +40,13 @@ export class App {
 
     getCityData(){
         this.addCityBtn.addEventListener("click", () => {
-            this.saveCities(this.cityInput.value);
-            let city = this.getCityInfo(this.cityInput.value);
+            const city = this.getCityInfo(this.cityInput.value);
             
             city.then(resp => {
-                this.uiWeather.renderWeatherElement(resp);
+                if(resp.cod === 200){
+                    this.saveCities(this.cityInput.value);
+                    this.uiWeather.renderWeatherElement(resp);
+                }
             })
         });
     }
@@ -109,12 +108,13 @@ class UIWeather{
         weatherClouds.textContent = `${weatherData.weather}`;
         weatherClouds.className = "weatherCoulds";
 
-        console.log(weatherData.weather[0])
+        console.log(weatherData)
+        console.log(weatherData.weather)
         const weatherIcon = document.createElement("img");
         // weatherIcon.src = `http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`;
 
         const weatherTemp = document.createElement("span");
-        weatherTemp.textContent = `${(weatherData.main.temp - 32) * 5 / 9} °C`;
+        weatherTemp.textContent = `${(weatherData.main.temp.toFixed(1))} °C`;
         weatherTemp.className = "weatherTemp";
 
         weatherMainInfoWrapper.appendChild(weatherCityName);
@@ -127,9 +127,11 @@ class UIWeather{
         weatherDetailInfoWrapper.className = "weatherDetails";
         
         const weatherHumidity = document.createElement("span");
+        weatherHumidity.textContent = `Wilgotność: ${(weatherData.main.humidity)}%`;
         weatherHumidity.className = "weatherHumidity";
 
         const weatherPressure = document.createElement("span");
+        weatherPressure.textContent = `Ciśnienie: ${(weatherData.main.pressure)}hPa`;
         weatherPressure.className = "weatherPressure";
 
         weatherDetailInfoWrapper.appendChild(weatherHumidity);

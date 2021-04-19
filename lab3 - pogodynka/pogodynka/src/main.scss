@@ -10,22 +10,16 @@ $weather-fontSize-details: 13px;
 body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
-  height: 100vh;
+  min-height: 100vh;
+  background-image: linear-gradient( $background-top-gradient, $background-bottom-gradient);
+
 }
-
-
 
 .inputWrapper{
   display: flex;
   justify-content: center;
   padding: 10px;
 }
-
-.mainWrapper{
-  background-image: linear-gradient( $background-top-gradient, $background-bottom-gradient);
-
-}
-
 
 .inputCity{
   background-color: transparent;
