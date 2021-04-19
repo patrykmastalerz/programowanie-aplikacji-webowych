@@ -94,7 +94,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  height: 20%;
+  align-items: center;
+  height: 70px;
 
 }
 
@@ -106,4 +107,13 @@ body {
 .weatherPressure{
   font-size: $weather-fontSize-details;
   color: $weather-text-color;
+}
+
+.removeCityButton{
+  font-size: $weather-fontSize-details;
+  color: $weather-text-color;
+  background-color: transparent;
+  width: 50px;
+  padding: 5px;
+  border: 1px $border-collor solid;
 }

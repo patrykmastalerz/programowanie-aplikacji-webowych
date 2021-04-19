@@ -29,11 +29,15 @@ export class App {
         console.log(city.length)
     }
 
-    saveCities(city: string) {
+    saveCities(city: string): boolean {
         let existingCities = this.getData();
-        existingCities.push(city);
 
-        localStorage.setItem('cities', JSON.stringify(existingCities));
+        if (!existingCities.includes(city)) {
+            existingCities.push(city);
+            localStorage.setItem('cities', JSON.stringify(existingCities));
+            return true;
+        }
+        return false;
     }
 
 
@@ -44,8 +48,10 @@ export class App {
             
             city.then(resp => {
                 if(resp.cod === 200){
-                    this.saveCities(this.cityInput.value);
-                    this.uiWeather.renderWeatherElement(resp);
+                    let isAdded = this.saveCities(resp.name);
+                    // let isAdded = this.saveCities(this.cityInput.value);
+                    if (isAdded) 
+                        this.uiWeather.renderWeatherElement(resp);
                 }
             })
         });
@@ -91,11 +97,32 @@ export class App {
 class UIWeather{
     name: string;
     temp: number;
+    wrapper: HTMLDivElement;
+
+    constructor() {
+        this.getWrapper();
+    }
+
+    getWrapper(){
+        this.wrapper = <HTMLDivElement>document.getElementById('wrapper');
+    }
+
+    removeCity(name: string){
+        const city = <HTMLDivElement>document.getElementById(name);
+
+        const allCities: string[] = JSON.parse(localStorage.getItem('cities'));
+        console.log(allCities);
+        const newCities = allCities.filter((e) => e !== name);
+        localStorage.setItem('cities', JSON.stringify(newCities));
+        this.wrapper.removeChild(city);
+    }
 
     renderWeatherElement(weatherData: IWeatherData){
-        const wrapper = document.getElementById('wrapper');
+        // const wrapper = document.getElementById('wrapper');
         const weatherWrapper = document.createElement('div');
         weatherWrapper.className = "weatherWrapper";
+        weatherWrapper.id = weatherData.name;
+
         // main details
         const weatherMainInfoWrapper = document.createElement('div');
         weatherMainInfoWrapper.className = "weatherMain"
@@ -109,7 +136,7 @@ class UIWeather{
         weatherClouds.className = "weatherCoulds";
 
         console.log(weatherData)
-        console.log(weatherData.weather)
+        // console.log(weatherData.weather[0])
         const weatherIcon = document.createElement("img");
         // weatherIcon.src = `http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`;
 
@@ -134,12 +161,21 @@ class UIWeather{
         weatherPressure.textContent = `Ciśnienie: ${(weatherData.main.pressure)}hPa`;
         weatherPressure.className = "weatherPressure";
 
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent= "Usuń";
+        removeBtn.className = "removeCityButton";
+        removeBtn.addEventListener('click', () => {
+            this.removeCity(weatherWrapper.id);
+            //this.wrapper.removeChild(weatherWrapper);
+        });
+
         weatherDetailInfoWrapper.appendChild(weatherHumidity);
         weatherDetailInfoWrapper.appendChild(weatherPressure);
+        weatherDetailInfoWrapper.appendChild(removeBtn);
 
         weatherWrapper.appendChild(weatherMainInfoWrapper);
         weatherWrapper.appendChild(weatherDetailInfoWrapper);
 
-        wrapper.appendChild(weatherWrapper);
+        this.wrapper.appendChild(weatherWrapper);
     }
 }
