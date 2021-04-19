@@ -38,16 +38,11 @@ export class UIWeather{
         weatherCityName.className = "weatherCity";
 
         const weatherClouds = document.createElement("span");
-        // tutaj wywala blad???
-        //weatherClouds.textContent = `${weatherData.weather[0].main}`;
+        weatherClouds.textContent = `${weatherData.weather[0].main}`;
         weatherClouds.className = "weatherCoulds";
-        const index: number = 0;
        
-        console.log(weatherData.weather);
-        console.log(weatherData.weather.pop().icon);
         const weatherIcon = document.createElement("img");
-        // tutaj wywala blad???
-        //weatherIcon.src = `http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`;
+        weatherIcon.src = `http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`;
 
         const weatherTemp = document.createElement("span");
         weatherTemp.textContent = `${(weatherData.main.temp.toFixed(1))} °C`;
@@ -76,7 +71,6 @@ export class UIWeather{
         removeBtn.className = "removeCityButton";
         removeBtn.addEventListener('click', () => {
             this.removeCity(weatherWrapper.id);
-            //this.wrapper.removeChild(weatherWrapper);
         });
 
         weatherDetailInfoWrapper.appendChild(weatherHumidity);

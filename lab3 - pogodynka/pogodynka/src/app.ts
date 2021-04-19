@@ -17,22 +17,17 @@ export class App {
 
     getWeatherAllCities(){
         let city:string [] = this.getData();
-
-        city.forEach( element => {
-            let info = this.getCityInfo(element);
-            info.then( resp => {
-                if (resp.cod === 200) {
-                    console.log(resp);
-                    this.uiWeather.renderWeatherElement(resp);
+        city.forEach(  async (element) => {
+            let info = await this.getCityInfo(element);
+                if (info.cod === 200) {
+                    console.log(info);
+                    this.uiWeather.renderWeatherElement(info);
                 }
-            })
         })
-        // console.log(city.length)
     }
 
     saveCities(city: string): boolean {
         let existingCities = this.getData();
-
         if (!existingCities.includes(city)) {
             existingCities.push(city);
             localStorage.setItem('cities', JSON.stringify(existingCities));
@@ -44,17 +39,14 @@ export class App {
 
 
     getCityData(){
-        this.addCityBtn.addEventListener("click", () => {
-            const city = this.getCityInfo(this.cityInput.value);
-            
-            city.then(resp => {
-                if(resp.cod === 200){
-                    let isAdded = this.saveCities(resp.name);
-                    // let isAdded = this.saveCities(this.cityInput.value);
-                    if (isAdded) 
-                        this.uiWeather.renderWeatherElement(resp);
-                }
-            })
+        this.addCityBtn.addEventListener("click", async () => {
+            const city = await this.getCityInfo(this.cityInput.value);
+            if(city.cod === 200){
+                let isAdded = this.saveCities(city.name);
+                if (isAdded) 
+                    this.uiWeather.renderWeatherElement(city);
+            }
+
         });
     }
 
@@ -71,26 +63,18 @@ export class App {
         const openWeatherUrl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${this.opwApiKey}`;
         const weatherResponse = await fetch(openWeatherUrl);
         const weatherData: IWeatherData = await weatherResponse.json();
-        console.log(weatherData);
         return weatherData;
     }
    
 
 
     getData() {
-        // const data = localStorage.getItem('weatherData');
         const data = localStorage.getItem('cities');
         if (data) {
             return JSON.parse(data);
-            // return data;
         } else {
             return [];
         }
     }
 
-
-    
-    // saveData(data: any) {
-    //     localStorage.setItem('weatherData', JSON.stringify(data));
-    // }
 }
