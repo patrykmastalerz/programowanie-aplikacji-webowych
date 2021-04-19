@@ -10,7 +10,7 @@ export interface IWeatherData {
         lon: number,
         lat: number,
     },
-    weather: IWeather[],
+    weather: IWeather[];
     base: string,
     main: {
         temp: number,

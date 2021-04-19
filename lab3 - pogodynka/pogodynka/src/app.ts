@@ -16,18 +16,18 @@ export class App {
 
 
     getWeatherAllCities(){
-        let city:any [] = this.getData();
+        let city:string [] = this.getData();
 
         city.forEach( element => {
             let info = this.getCityInfo(element);
             info.then( resp => {
                 if (resp.cod === 200) {
-                    console.log("tutaj renderowanie widoku")
+                    console.log(resp);
                     this.uiWeather.renderWeatherElement(resp);
                 }
             })
         })
-        console.log(city.length)
+        // console.log(city.length)
     }
 
     saveCities(city: string): boolean {
