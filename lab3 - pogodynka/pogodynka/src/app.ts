@@ -33,7 +33,7 @@ export class App {
             localStorage.setItem('cities', JSON.stringify(existingCities));
             return true;
         }
-        else{
+        else {
             window.alert("To miasto juz wyswietla dane!");
             return false;
         }
@@ -52,7 +52,6 @@ export class App {
             else {
                 window.alert("Takie miasto nie istnieje!");
             }
-
         });
     }
 
@@ -65,6 +64,7 @@ export class App {
         const weather = await this.getWeather(city);
         return weather;
     }
+    
     async getWeather(city: string): Promise<IWeatherData> {
         const openWeatherUrl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${this.opwApiKey}`;
         const weatherResponse = await fetch(openWeatherUrl);

@@ -24,7 +24,6 @@ export class UIWeather{
     }
 
     renderWeatherElement(weatherData: IWeatherData){
-        // const wrapper = document.getElementById('wrapper');
         const weatherWrapper = document.createElement('div');
         weatherWrapper.className = "weatherWrapper";
         weatherWrapper.id = weatherData.name;
