@@ -33,7 +33,10 @@ export class App {
             localStorage.setItem('cities', JSON.stringify(existingCities));
             return true;
         }
-        return false;
+        else{
+            window.alert("To miasto juz wyswietla dane!");
+            return false;
+        }
     }
 
 
@@ -45,6 +48,9 @@ export class App {
                 let isAdded = this.saveCities(city.name);
                 if (isAdded) 
                     this.uiWeather.renderWeatherElement(city);
+            }
+            else {
+                window.alert("Takie miasto nie istnieje!");
             }
 
         });
