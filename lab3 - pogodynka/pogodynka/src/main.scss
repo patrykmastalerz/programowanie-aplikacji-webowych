@@ -53,7 +53,7 @@ body {
 
 .weatherWrapper{
   width: 220px;
-  height: 220px;
+  height: 270px;
   border: #fff 1px solid;
   display: flex;
   flex-direction: column;
@@ -76,6 +76,7 @@ body {
   color: $weather-text-color;
   font-size: $city-fontSize;
   text-transform: uppercase;
+  text-align: center;
 }
 
 .weatherTemp{

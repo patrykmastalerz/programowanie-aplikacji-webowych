@@ -1,14 +1,16 @@
+export interface IWeather {
+    id: number,
+    main: string,
+    description: string,
+    icon: string
+}
+
 export interface IWeatherData {
     coord: {
         lon: number,
         lat: number,
     },
-    weather: {
-        id: number,
-        main: string,
-        description: string,
-        icon: string
-    },
+    weather: IWeather[],
     base: string,
     main: {
         temp: number,
