@@ -1,19 +1,19 @@
+import { INoteInterface } from "./INoteInterface";
 
 export class appStorage{
 
 
-    setData(note: string){
+    setData(note: INoteInterface){
         let existingNotes = this.getData();
         existingNotes.push(note);
 
-        localStorage.setItem('notes', existingNotes);
+        localStorage.setItem('notes', JSON.stringify(existingNotes));
     }
     
-    getData() {
+    getData(): (INoteInterface[]) {
         const data = localStorage.getItem('notes');
 
         if (data) {
-            return data
             return JSON.parse(data);
         } else {
             return [];

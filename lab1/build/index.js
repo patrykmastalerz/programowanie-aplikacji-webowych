@@ -13,6 +13,9 @@ var App1 = /** @class */ (function () {
     };
     App1.prototype.calculateData = function () {
         var numbers = [];
+        this.DatasInputs.forEach(function (x) {
+            console.log(x.value);
+        });
         for (var index = 0; index < this.DatasInputs.length; index++) {
             var element = this.DatasInputs[index];
             numbers.push(+element.value);
