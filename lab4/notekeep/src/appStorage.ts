@@ -1,22 +1,39 @@
 import { INoteInterface } from "./INoteInterface";
 
-export class appStorage{
+export class AppStorage{
+    private readonly KEY_NOTES : string = 'notes'; 
 
 
-    setData(note: INoteInterface){
+    saveData(note: INoteInterface){
         let existingNotes = this.getData();
         existingNotes.push(note);
 
-        localStorage.setItem('notes', JSON.stringify(existingNotes));
+        localStorage.setItem(this.KEY_NOTES, JSON.stringify(existingNotes));
     }
     
-    getData(): (INoteInterface[]) {
-        const data = localStorage.getItem('notes');
+    getData(): INoteInterface[] {
+        const data = localStorage.getItem(this.KEY_NOTES);
 
-        if (data) {
+        if (data) 
             return JSON.parse(data);
-        } else {
-            return [];
-        }
+        return [];
+    
+    }
+
+    updateData(id: number, title: string, text: string){
+        let existingNotes = this.getData();
+        // const noteToEdit = existingNotes.filter( n => n.id = note.id);
+        const noteIndex = existingNotes.findIndex((n => n.id = id));
+        existingNotes[noteIndex].title = title;
+        existingNotes[noteIndex].text = text;
+
+        localStorage.setItem(this.KEY_NOTES, JSON.stringify(existingNotes));
+
+    }
+
+    removeData(id: number){
+        const notes = this.getData();
+        notes.splice(notes.findIndex((n) => n.id === id), 1);
+        localStorage.setItem(this.KEY_NOTES, JSON.stringify(notes));
     }
 }

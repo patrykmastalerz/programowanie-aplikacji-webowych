@@ -12,16 +12,23 @@ body {
   margin: 0;
   min-height: 100vh;
   background-image: linear-gradient( $background-top-gradient, $background-bottom-gradient);
-
+  padding: 5px;
 }
 
 .inputWrapper{
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   padding: 10px;
+  width: 350px;
+  height: 200px;
+  margin: 10px auto;
+  border: 1px solid white;
+  border-radius: 5px;
 }
 
-.inputCity{
+.input{
   background-color: transparent;
   border: 0px;
   border-bottom: $border-collor 1px solid;
@@ -34,8 +41,8 @@ body {
   }
 }
 
-.btnCity{
-  margin-left: 10px;
+.noteBtn{
+  margin-top: 20px;
   background-color: transparent;
   border: $border-collor 1px solid;
   border-radius: 5px;
@@ -45,58 +52,66 @@ body {
 
 .wrapper{
   margin: 0 auto;
-  width: 80%;
+  width: 95%;
   display: flex;  
-  justify-content: center;
+  justify-content: left;
   flex-wrap: wrap;
+  background: yellow;
 }
 
-.weatherWrapper{
-  width: 220px;
-  height: 270px;
+.others{
+  width: 100%;
+  background-color: blue;
   border: #fff 1px solid;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
   margin: 20px;
 }
 
-.weatherMain{
-
-  width: 60%;
+.notes-wrapper{
+  width: 200px;
+  min-height: 250px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   padding: 5px;
+  background-color: grey;
+  border: 1px solid white;
+  border-radius: 5px;
+  margin: 0 10px;
 }
 
-.weatherCity{
+.note-title{
   color: $weather-text-color;
   font-size: $city-fontSize;
   text-transform: uppercase;
   text-align: center;
 }
 
-.weatherTemp{
+.note-text{
   color: $weather-text-color;
   font-size: $weather-fontSize;
   text-transform: uppercase;
 }
 
-.weatherCoulds{
+.note-date{
   font-size: $weather-fontSize;
   color: $weather-text-color;
 }
 
-.weatherDetails{
+
+
+.note-details{
   border-top: 2px $border-collor solid;
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  height: 70px;
+  height: 30px;
+  background-color: orange;
 
 }
 
@@ -117,4 +132,32 @@ body {
   width: 50px;
   padding: 5px;
   border: 1px $border-collor solid;
+}
+
+.edit-wrapper{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  top: 0px;
+  left: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-innerWrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  width: 350px;
+  height: 200px;
+  margin: 10px auto;
+  border: 1px solid white;
+  border-radius: 5px;
+  background-color: grey;
+  // opacity: 100%;
 }
