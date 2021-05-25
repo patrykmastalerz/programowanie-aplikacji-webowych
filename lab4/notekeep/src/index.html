@@ -12,31 +12,23 @@
         <div class="inputWrapper">
           <input type="text" id="title" class="input" placeholder="Podaj tytul">
           <input type="text" id="text" class="input" placeholder="Podaj text notatki">
-
-
+          <select id="color" class="color-select">
+            <option value="white" class="color-selected">White</option>
+            <option value="green" class="color-selected">Green</option>
+            <option value="orange" class="color-selected">Orange</option>
+          <select>
           <button id="addNoteButton" class="noteBtn">Dodaj</button>
         </div>
   
         <div id="wrapper" class="wrapper">
+          <span class="wrapperTitle">Przypięte</span>
           <div id="pinned" class="pinned">
+          </div>
+          <span class="wrapperTitle">Inne</span>
+          <div id="others" class="others">
 
           </div>
-          <div id="others" class="others">
-            <!-- <div class="notes-wrapper">
-              <span class="note-title">title</span>
-              <span class="note-text">text fasdfasd fasd faf asdf</span>
-              
-              <div class="note-details">
-                <span class="note-date">13-13-2013</span>
-                <div>
-                  <button id="deleteBtn" class="note-btn">X</button>
-                  <button id="editBtn" class="note-btn">E</button>
-                </div>
-              </div> -->
-     
-            </div>
-            
-            test
+
           </div>
   
         </div>

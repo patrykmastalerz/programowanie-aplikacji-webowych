@@ -3,12 +3,14 @@ import { AppStorage } from "./AppStorage";
 import { INoteInterface } from "./INoteInterface";
 import { Note } from "./Note";
 
+//tworzenie z inputa oraz z localstorage
 export class Notes{
     private appStorage: AppStorage;
     private note: Note
 
     private titleInput: HTMLInputElement;
     private textInput: HTMLInputElement;
+    private colorInput: HTMLSelectElement;
     private createButton: HTMLButtonElement;
 
     constructor(appStorage: AppStorage, note: Note) {
@@ -16,7 +18,6 @@ export class Notes{
         this.note = note;
         
         this.getElements();
-
         this.createNotesFromLocalStorage();
         this.createNoteFromInput();
     }
@@ -24,10 +25,10 @@ export class Notes{
     private createNotesFromLocalStorage(){
         const data = this.appStorage.getData();
         data.forEach( n => {
-            this.note.createNote(n.id, n.title, n.text, "yellow");
-            console.log(n);
+                this.note.createNote(n.id, n.title, n.text, n.color, n.pinned);
         })
     }
+
 
     private createNoteFromInput(){
         this.createButton.addEventListener('click', () => {
@@ -35,12 +36,21 @@ export class Notes{
             const id = this.note.generateId();
             const title = this.getTitleFromInput();
             const text = this.getTextFromInput();
-            const note = this.note.createNote(id, title, text, 'red');
-            this.appStorage.saveData(note);
+            const color = this.getColorFromSelect();
+            if (title == "" || text == ""){
+                window.alert("Wprowadz dane!");
+            } else {
+                const note = this.note.createNote(id, title, text, color, false);
+                this.appStorage.saveData(note);
+                this.resetInputs();
+            }
         })
     }
 
-    //pobieranie danych z inputa
+    private checkInput(title: string, text: string){
+        window.alert("Wprowadz dane!");
+    }
+
     private getTitleFromInput(): string{
         return this.titleInput.value;
     }
@@ -49,9 +59,14 @@ export class Notes{
         return this.textInput.value;
     }
 
+    private getColorFromSelect(): string{
+        return this.colorInput.value;
+    }
+
     private getInputs(){
         this.titleInput = <HTMLInputElement>document.getElementById('title');
         this.textInput = <HTMLInputElement>document.getElementById('text');
+        this.colorInput = <HTMLSelectElement>document.getElementById('color');
     }
 
     private getCreateButton(){
@@ -61,6 +76,12 @@ export class Notes{
     private getElements(){
         this.getInputs();
         this.getCreateButton();
+    }
+
+    
+    private resetInputs(){
+        this.titleInput.value = "";
+        this.textInput.value = ""
     }
 
 }

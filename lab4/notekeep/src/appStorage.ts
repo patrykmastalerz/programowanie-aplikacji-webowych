@@ -17,18 +17,13 @@ export class AppStorage{
         if (data) 
             return JSON.parse(data);
         return [];
-    
     }
 
-    updateData(id: number, title: string, text: string){
+    updateData(id: number, title: string, text: string, isPinned: boolean){
         let existingNotes = this.getData();
-        // const noteToEdit = existingNotes.filter( n => n.id = note.id);
-        const noteIndex = existingNotes.findIndex((n => n.id = id));
-        existingNotes[noteIndex].title = title;
-        existingNotes[noteIndex].text = text;
 
-        localStorage.setItem(this.KEY_NOTES, JSON.stringify(existingNotes));
-
+        const result = existingNotes.map(item => item.id === id ? { ...item, title, text, isPinned } : item)
+        localStorage.setItem(this.KEY_NOTES, JSON.stringify(result));
     }
 
     removeData(id: number){

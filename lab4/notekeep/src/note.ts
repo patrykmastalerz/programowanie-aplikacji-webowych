@@ -6,13 +6,12 @@ export class Note{
     text: string;
     color: string;
     date: string;
-    isPinned: boolean;
     editBtn: HTMLButtonElement;
-
+    pinBtn: HTMLButtonElement;
 
     wrapper: HTMLDivElement;
+    pinnedWrapper: HTMLDivElement;
     appStorage: AppStorage;
-
 
     constructor(appStorage: AppStorage) {
         
@@ -20,19 +19,12 @@ export class Note{
         this.getWrapper();
     }
 
-
-
-    changeIsPinned(){
-        !this.isPinned;
-    }
-
-
-    //wyciagnac to do zewnetrzej klasy gdzie przekazujemy te elementy plus ojca    
-    createNote(id: number, title: string, text:string, color: string): INoteInterface{
+    createNote(id: number, title: string, text:string, color: string, pinned: boolean): INoteInterface{
         const date = this.generateReadableDateXD();
-        // const id = this.generateId()
+        let pin = pinned;
 
         const noteWrapper: HTMLDivElement = document.createElement("div");
+        console.log(color);
         noteWrapper.style.backgroundColor = color;
         noteWrapper.className = "notes-wrapper";
         noteWrapper.id = `${id}-wrapper`;
@@ -42,6 +34,7 @@ export class Note{
         titleSpan.className = "note-title";
         titleSpan.id = `${id}-title`;
         
+
         const textSpan: HTMLSpanElement = document.createElement("span");
         textSpan.textContent = text;
         textSpan.className = "note-text";
@@ -57,13 +50,12 @@ export class Note{
 
         const btnWrapper: HTMLDivElement = document.createElement("div");
 
-
         const deleteBtn: HTMLButtonElement = document.createElement("button");
         deleteBtn.className = "note-btn";
         deleteBtn.textContent = "X"
         deleteBtn.id = `${id}-deleteBtn`;
         deleteBtn.addEventListener('click', () => {
-            this.removeNote(id);
+            this.removeNote(id, pin);
         })
 
         const editBtn: HTMLButtonElement = document.createElement("button");
@@ -72,11 +64,33 @@ export class Note{
         editBtn.textContent = "E"
         editBtn.id = `${id}-editBtn`;
         editBtn.addEventListener('click', () => {
-            this.createEditPop(id, title, text, color);
+            this.createEditPop(id, pin);
         })
 
+        const pinBtn: HTMLButtonElement = document.createElement("button");
+        this.pinBtn = pinBtn;
+        pinBtn.className = "note-btn";
+        pinBtn.textContent = "P";
+        pinBtn.id = `${id}-pinBtn`;
+        pinBtn.addEventListener('click', () => {
+            if(pin == false){
+                pin = !pin;
+                this.pinnedWrapper.appendChild(noteWrapper);
+                this.appStorage.updateData(id, title, text, pin)
+
+            } else if(pin == true){
+                pin = !pin;
+                this.wrapper.appendChild(noteWrapper)
+                this.appStorage.updateData(id, title, text, pin)
+            }
+
+
+        })
+
+        btnWrapper.appendChild(pinBtn);
         btnWrapper.appendChild(deleteBtn);
         btnWrapper.appendChild(editBtn);
+
 
         detailsWrapper.appendChild(dateSpan);
         detailsWrapper.appendChild(btnWrapper);
@@ -85,19 +99,25 @@ export class Note{
         noteWrapper.appendChild(textSpan);
         noteWrapper.appendChild(detailsWrapper);
 
-        this.wrapper.appendChild(noteWrapper);
+        if(pin == false){
+            this.wrapper.appendChild(noteWrapper);
+        }
+        else if(pin == true) {
+            this.pinnedWrapper.appendChild(noteWrapper);
+        }
 
         return {
-            id,
-            title,
-            text,
-            color,
-            date,
+            id: id,
+            title: title,
+            text: text,
+            color: color,
+            date: date,
+            pinned: pin,
         };
     }
 
 
-    private createEditPop(id: number, title: string, text:string, color: string){
+    private createEditPop(id: number, pin: boolean){
         const editWrapper = document.createElement("div");
         editWrapper.className = "edit-wrapper";
         editWrapper.id = "edit"
@@ -108,10 +128,12 @@ export class Note{
         const editTitle = document.createElement("input");
         editTitle.id = "editTitle";
         editTitle.className = "input";
+        editTitle.placeholder = "Podaj nowy tytul"
 
         const editText = document.createElement("input");
         editText.id = "editText";
         editText.className = "input";
+        editText.placeholder = "Podaj nowy tekst"
 
         const editBtn = document.createElement("button");
         editBtn.id = "editText";
@@ -119,39 +141,42 @@ export class Note{
         editBtn.className = "noteBtn";
 
         editBtn.addEventListener('click', () => {
-            this.updateNote(id, editTitle.value, editText.value, "blue");
-            this.appStorage.updateData(id, editTitle.value, editText.value)
-            this.wrapper.removeChild(editWrapper);
+            if(editTitle.value == "" || editText.value == ""){
+                window.alert("Wprowadz dane!");
+            } else{
+                this.updateNote(id, editTitle.value, editText.value);
+                this.appStorage.updateData(id, editTitle.value, editText.value, pin)
+                document.body.removeChild(editWrapper);
+            }
+
         })
-
-
         editInnerWrapper.appendChild(editTitle);
         editInnerWrapper.appendChild(editText);
         editInnerWrapper.appendChild(editBtn);
-
         editWrapper.appendChild(editInnerWrapper)
-
-
-        this.wrapper.appendChild(editWrapper);
+        document.body.appendChild(editWrapper);
     }
 
 
-    private updateNote(id: number, title: string, text:string, color: string){
+    private updateNote(id: number, title: string, text:string){
         const titleSpan: HTMLSpanElement = document.getElementById(`${id}-title`);
         titleSpan.textContent = title;
 
         const textSpan: HTMLSpanElement = document.getElementById(`${id}-content`);
         textSpan.textContent = text;
-
-        const noteWrapper: HTMLElement = document.getElementById(`${id}-wrapper`);
-        noteWrapper.style.backgroundColor = color;
     }
 
-    removeNote(id:number){
+    removeNote(id:number, pin: boolean){
         const note = <HTMLDivElement>document.getElementById(`${id}-wrapper`);
-
-        this.appStorage.removeData(id);
-        this.wrapper.removeChild(note);
+        const data = this.appStorage.getData();
+        if(pin == true){
+            this.pinnedWrapper.removeChild(note);
+            this.appStorage.removeData(id);
+        }
+        else if(pin == false) {
+            this.wrapper.removeChild(note);
+            this.appStorage.removeData(id);
+        }
     }
 
     private generateReadableDateXD(): string{
@@ -165,6 +190,7 @@ export class Note{
 
     private getWrapper(){
         this.wrapper = <HTMLDivElement>document.getElementById('others');
+        this.pinnedWrapper = <HTMLDivElement>document.getElementById('pinned');
     }
 
     public generateId(): number {

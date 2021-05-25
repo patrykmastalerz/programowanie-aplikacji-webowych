@@ -4,4 +4,5 @@ export interface INoteInterface{
     text: string;
     color: string;
     date: string;
+    pinned: boolean;
 }

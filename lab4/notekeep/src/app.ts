@@ -1,5 +1,6 @@
+import { Notes } from "./Notes";
 
 
 export class App {
- private text = "test";
+
 }
