@@ -1,4 +1,3 @@
-import { App } from "./app";
 import { AppStorage } from "./AppStorage";
 import { INoteInterface } from "./INoteInterface";
 import { Note } from "./Note";

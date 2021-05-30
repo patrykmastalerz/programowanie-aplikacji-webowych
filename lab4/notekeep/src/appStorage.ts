@@ -19,10 +19,10 @@ export class AppStorage{
         return [];
     }
 
-    updateData(id: number, title: string, text: string, isPinned: boolean){
+    updateData(id: number, title: string, text: string, pinned: boolean){
         let existingNotes = this.getData();
 
-        const result = existingNotes.map(item => item.id === id ? { ...item, title, text, isPinned } : item)
+        const result = existingNotes.map(item => item.id === id ? { ...item, title, text, pinned } : item)
         localStorage.setItem(this.KEY_NOTES, JSON.stringify(result));
     }
 

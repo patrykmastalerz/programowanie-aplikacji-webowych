@@ -1,11 +1,12 @@
 import { AppStorage } from "./AppStorage";
 import { INoteInterface } from "./INoteInterface";
+import { NoteUi } from "./NoteUi";
 
 export class Note{
-    title: string; 
-    text: string;
-    color: string;
-    date: string;
+    // title: string; 
+    // text: string;
+    // color: string;
+    // date: string;
     editBtn: HTMLButtonElement;
     pinBtn: HTMLButtonElement;
 
@@ -23,11 +24,13 @@ export class Note{
         const date = this.generateReadableDateXD();
         let pin = pinned;
 
-        const noteWrapper: HTMLDivElement = document.createElement("div");
-        console.log(color);
-        noteWrapper.style.backgroundColor = color;
-        noteWrapper.className = "notes-wrapper";
-        noteWrapper.id = `${id}-wrapper`;
+
+        const noteWrapper = NoteUi.createElement<HTMLDivElement>('div', id, "notes-wrapper", undefined , color);
+        // const noteWrapper: HTMLDivElement = document.createElement("div");
+        // console.log(color);
+        // noteWrapper.style.backgroundColor = color;
+        // noteWrapper.className = "notes-wrapper";
+        // noteWrapper.id = `${id}-wrapper`;
 
         const titleSpan: HTMLSpanElement = document.createElement("span");
         titleSpan.textContent = title;
@@ -73,12 +76,12 @@ export class Note{
         pinBtn.textContent = "P";
         pinBtn.id = `${id}-pinBtn`;
         pinBtn.addEventListener('click', () => {
-            if(pin == false){
+            if(pin === false){
                 pin = !pin;
                 this.pinnedWrapper.appendChild(noteWrapper);
                 this.appStorage.updateData(id, title, text, pin)
 
-            } else if(pin == true){
+            } else if(pin === true){
                 pin = !pin;
                 this.wrapper.appendChild(noteWrapper)
                 this.appStorage.updateData(id, title, text, pin)
@@ -99,10 +102,12 @@ export class Note{
         noteWrapper.appendChild(textSpan);
         noteWrapper.appendChild(detailsWrapper);
 
-        if(pin == false){
+        console.log(pin);
+        if(pin === false){
+            
             this.wrapper.appendChild(noteWrapper);
         }
-        else if(pin == true) {
+        else if(pin === true) {
             this.pinnedWrapper.appendChild(noteWrapper);
         }
 
