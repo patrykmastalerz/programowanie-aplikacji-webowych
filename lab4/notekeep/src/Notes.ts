@@ -1,10 +1,11 @@
 import { AppStorage } from "./AppStorage";
+import { IAppStorage } from "./IAppStorage";
 import { INoteInterface } from "./INoteInterface";
 import { Note } from "./Note";
 
 //tworzenie z inputa oraz z localstorage
 export class Notes{
-    private appStorage: AppStorage;
+    private appStorage: IAppStorage;
     private note: Note
 
     private titleInput: HTMLInputElement;
@@ -12,7 +13,7 @@ export class Notes{
     private colorInput: HTMLSelectElement;
     private createButton: HTMLButtonElement;
 
-    constructor(appStorage: AppStorage, note: Note) {
+    constructor(appStorage: IAppStorage, note: Note) {
         this.appStorage = appStorage;
         this.note = note;
         
@@ -21,9 +22,9 @@ export class Notes{
         this.createNoteFromInput();
     }
 
-    private createNotesFromLocalStorage(){
-        const data = this.appStorage.getData();
-        data.forEach( n => {
+    private async createNotesFromLocalStorage(){
+        const data = await this.appStorage.getData();
+        data.forEach( (n) => {
                 this.note.createNote(n.id, n.title, n.text, n.color, n.pinned);
         })
     }
@@ -39,12 +40,16 @@ export class Notes{
             if (title == "" || text == ""){
                 window.alert("Wprowadz dane!");
             } else {
+                // const testNote = {id, title, text, color, false}
                 const note = this.note.createNote(id, title, text, color, false);
                 this.appStorage.saveData(note);
                 this.resetInputs();
             }
         })
     }
+
+
+
 
     private checkInput(title: string, text: string){
         window.alert("Wprowadz dane!");
