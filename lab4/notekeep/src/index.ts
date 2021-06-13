@@ -1,12 +1,11 @@
 
 import './main.scss';
-import { AppStorage } from './appStorage';
 import { Note } from './note';
 import { Notes } from './notes';
-import { AppFirestoreStorage } from './AppFirestoreStorage';
+import { DatabaseConfiguration } from './configDatabase';
 
-const appStorage = new AppStorage();
-const fire = new AppFirestoreStorage();
 
-const note = new Note(fire);
-const notes = new Notes(fire, note);
+const appDatabase = DatabaseConfiguration.selectTypeOfDatabase();
+
+const note = new Note(appDatabase);
+const notes = new Notes(appDatabase, note);
