@@ -23,62 +23,32 @@ export class Note{
 
 
         const noteWrapper = NoteUi.createElement<HTMLDivElement>('div', `${id}-wrapper`, "notes-wrapper", undefined , color);
-        // const noteWrapper: HTMLDivElement = document.createElement("div");
-        // console.log(color);
-        // noteWrapper.style.backgroundColor = color;
-        // noteWrapper.className = "notes-wrapper";
-        // noteWrapper.id = `${id}-wrapper`;
 
         const titleSpan = NoteUi.createElement<HTMLSpanElement>('span', `${id}-title`, "note-title", title , undefined);
-        // const titleSpan: HTMLSpanElement = document.createElement("span");
-        // titleSpan.textContent = title;
-        // titleSpan.className = "note-title";
-        // titleSpan.id = `${id}-title`;
-        
 
         const textSpan = NoteUi.createElement<HTMLSpanElement>('span', `${id}-content`, "note-text", text , undefined);
-        // const textSpan: HTMLSpanElement = document.createElement("span");
-        // textSpan.textContent = text;
-        // textSpan.className = "note-text";
-        // textSpan.id = `${id}-content`;
+
 
         const detailsWrapper: HTMLDivElement = document.createElement("div");
         detailsWrapper.className = "note-details";
 
         const dateSpan = NoteUi.createElement<HTMLSpanElement>('span', `${id}-date`, "note-date", date , undefined);
-        // const dateSpan: HTMLSpanElement = document.createElement("span");
-        // dateSpan.textContent = date;
-        // dateSpan.className = "note-date";
-        // dateSpan.id = `${id}-date`;
 
         const btnWrapper: HTMLDivElement = document.createElement("div");
 
 
         const deleteBtn = NoteUi.createElement<HTMLButtonElement>('button', `${id}-deleteBtn`, "note-btn", "X" , undefined);
-        // const deleteBtn: HTMLButtonElement = document.createElement("button");
-        // deleteBtn.className = "note-btn";
-        // deleteBtn.textContent = "X"
-        // deleteBtn.id = `${id}-deleteBtn`;
         deleteBtn.addEventListener('click', async () => {
             await this.removeNote(id, pin);
         })
 
         const editBtn = NoteUi.createElement<HTMLButtonElement>('button',  `${id}-editBtn`, "note-btn", "E" , undefined);
-        // const editBtn: HTMLButtonElement = document.createElement("button");
-        // this.editBtn = editBtn;
-        // editBtn.className = "note-btn";
-        // editBtn.textContent = "E"
-        // editBtn.id = `${id}-editBtn`;
         editBtn.addEventListener('click', () => {
             this.createEditPop(id, pin);
         })
 
         const pinBtn = NoteUi.createElement<HTMLButtonElement>('button', `${id}-pinBtn`, "note-btn", "P" , undefined);
-        // const pinBtn: HTMLButtonElement = document.createElement("button");
-        // this.pinBtn = pinBtn;
-        // pinBtn.className = "note-btn";
-        // pinBtn.textContent = "P";
-        // pinBtn.id = `${id}-pinBtn`;
+
         pinBtn.addEventListener('click', () => {
             if(pin === false){
                 pin = !pin;
