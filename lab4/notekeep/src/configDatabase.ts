@@ -2,7 +2,7 @@ import { AppFirestoreStorage } from "./AppFirestoreStorage";
 import { AppStorage } from "./AppStorage";
 import { IAppStorage } from "./IAppStorage";
 
-export const  SHOULD_BE_FIRESTORE:boolean = true;
+export let SHOULD_BE_FIRESTORE:boolean = true;
 
 export class DatabaseConfiguration {
 
