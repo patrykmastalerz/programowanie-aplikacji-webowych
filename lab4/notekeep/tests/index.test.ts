@@ -3,19 +3,19 @@ import * as puppeteer from 'puppeteer';
 describe('index tests', () => {
   let browser: puppeteer.Browser;
   let page: puppeteer.Page;
-  let id: string;
+  let date: string;
 
   beforeAll(async () => {
-    browser = await puppeteer.launch({ headless: false, slowMo:5})
+    browser = await puppeteer.launch({ headless: false, slowMo: 10})
     page = await browser.newPage();
-    id = Date.now().toString();
+    date = Date.now().toString();
 
     await page.goto('http://localhost:8080/');
     await page.waitForSelector('#title');
     await page.type('#title', 'Testowy tytuł notatki');
   
     await page.waitForSelector('#text');
-    await page.type('#text', `Notatka testowa - ${id}`);
+    await page.type('#text', `Notatka testowa - ${date}`);
   
     await page.waitForSelector('#color');
     await page.select('#color', 'white');
@@ -24,15 +24,18 @@ describe('index tests', () => {
   });
 
   it('notatka utworzona',  async () => {
-    await page.waitForSelector('.note-text');
-    let res = await page.evaluate( () => {
+    
 
-      const notes = [...document.querySelectorAll(".note-text")] as HTMLSpanElement[]; 
-      const note = notes.find( x => x.innerText === `Notatka testowa - ${id}`)
+    await page.waitForSelector(`#others`);
+    let res = await page.evaluate(  (date) => {
+
+      const notes = [...document.querySelectorAll("#others .note-text")] as HTMLSpanElement[]; 
+      // :c
+      const note =  notes.find( x => x.innerText === `NOTATKA TESTOWA - ${date}`)
       return note.innerText;
-    });
+    },date);
 
-    expect(res).toBe(`Notatka testowa - ${id}`);
+    await expect(res).toBe(`NOTATKA TESTOWA - ${date}`);
   });
 
   afterAll(async () => {
